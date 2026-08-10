@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,3 +21,4 @@ Route::get('/siswa', function () {
 })->name('siswa.index');
 
 Route::resource('users', UserController::class);
+// Route::resource('test', TestController::class);

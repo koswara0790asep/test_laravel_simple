@@ -51,7 +51,7 @@
     <link rel="stylesheet" href="{{ asset('/css/demo.css') }}" />
     <link rel="stylesheet" href="{{ asset('/css/dataTables.bootstrap5.min.css') }}" />
 
-    <!-- Tempat CSS Tambahan Halaman Anak -->
+    <!-- Tempat CSS Tambahan Halaman Modular -->
     @stack('styles')
 
 
@@ -270,6 +270,7 @@
             <!-- Content -->
 
             <div class="container-xxl flex-grow-1 container-p-y">
+              
               @yield('content')
             </div>
             <!-- / Content -->
@@ -324,7 +325,7 @@
     <!-- Page JS -->
     <script src="{{ asset('/js/dashboards-analytics.js') }}"></script>
 
-    <!-- Tempat Script Tambahan Halaman Anak -->
+    <!-- Tempat Script Tambahan Halaman Modular -->
     @stack('scripts')
 
 

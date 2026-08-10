@@ -6,8 +6,8 @@
     <!-- ================= TABLE / DATATABLE PAGE ================= -->
     <div class="card">
       <h5 class="card-header">Data Siswa</h5>
-      <div class="table-responsive text-nowrap">
-        <table class="table">
+      <div class="table-responsive text-nowrap p-4">
+        <table id="myTable" class="table">
           <thead>
             <tr class="text-nowrap">
               <th>#</th>
@@ -59,3 +59,13 @@
       </div>
     </div>
 @endsection
+
+@push('scripts')
+  <script> 
+    $(document).ready(function() {
+      $('#myTable').DataTable({
+
+      })
+    })
+  </script> 
+@endpush 

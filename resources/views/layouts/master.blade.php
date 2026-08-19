@@ -153,6 +153,14 @@
               </a>
             </li>
 
+            {{-- Data User --}}
+            <li class="menu-item {{ request()->is('users*') ? 'active' : ''}}">
+              <a href="{{ route('users.index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div data-i18n="Users">Data User</div>
+              </a>
+            </li>
+
             {{-- Data Siswa --}}
             <li class="menu-item {{ request()->is('siswa*') ? 'active' : ''}}">
               <a href="{{ route('siswa.index') }}" class="menu-link">
@@ -270,7 +278,21 @@
             <!-- Content -->
 
             <div class="container-xxl flex-grow-1 container-p-y">
-              
+              {{-- // Alert success --}}
+              @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Sukses!</strong> {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              @endif
+              {{-- // Alert error --}}
+              @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              @endif
+
               @yield('content')
             </div>
             <!-- / Content -->

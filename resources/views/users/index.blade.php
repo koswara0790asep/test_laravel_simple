@@ -4,6 +4,7 @@
 
 @section('content')
 
+        
         <!-- Basic Bootstrap Table -->
         <div class="card">
             <h5 class="card-header">Data User</h5>
@@ -20,6 +21,7 @@
                                 <th>No</th>
                                 <th>Nama</th>
                                 <th>Email</th>
+                                <th>Tanggal Dibuat</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -29,6 +31,7 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
+                                    <td>{{ $user->created_at->format('d M Y H:i') }}</td>
                                     <td>
                                         <!-- Tombol Aksi (Edit, Hapus, dll) -->
                                         <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-primary">Edit</a>
@@ -50,30 +53,6 @@
 
 @push('scripts')
 <script>
-    new DataTable('#myTable', {
-	
-});
-    // $(document).ready(function() {
-    //     // Inisialisasi DataTables pada ID #myTable
-    //     $('#myTable').DataTable({
-    //         // Bahasa Indonesia untuk UI DataTables
-    //         "language": {
-    //             "sEmptyTable":   "Tidak ada data yang tersedia pada tabel ini",
-    //             "sProcessing":   "Sedang memproses...",
-    //             "sLengthMenu":   "Tampilkan _MENU_ entri",
-    //             "sZeroRecords":  "Tidak ditemukan data yang sesuai",
-    //             "sInfo":         "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
-    //             "sInfoEmpty":    "Menampilkan 0 sampai 0 dari 0 entri",
-    //             "sInfoFiltered": "(disaring dari _MAX_ entri keseluruhan)",
-    //             "sSearch":       "Cari Data:",
-    //             "oPaginate": {
-    //                 "sFirst":    "Pertama",
-    //                 "sPrevious": "Sebelumnya",
-    //                 "sNext":     "Selanjutnya",
-    //                 "sLast":     "Terakhir"
-    //             }
-    //         }
-    //     });
-    // });
+    new DataTable('#myTable', {});
 </script>
 @endpush

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\LogHelper;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -14,6 +16,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::latest()->get(); // Mengambil semua data user terbaru
+        // $users = User::latest()->paginate(10); // Mengambil data user terbaru dengan pagination
         return view('users.index', compact('users'));
     }
 
@@ -43,6 +46,8 @@ class UserController extends Controller
             'email'    => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        LogHelper::record('User ' . $request->name . "(". $request->email .") berhasil ditambahkan oleh Staff - ". Auth::user()->email ."!");
 
         // 3. Redirect ke Halaman Index dengan Pesan Sukses
         return redirect()->route('users.index')
@@ -91,6 +96,8 @@ class UserController extends Controller
         // 3. Eksekusi Update ke Database
         $user->update($data);
 
+        LogHelper::record('User ' . $request->name . "(". $request->email .") berhasil diperbarui oleh Staff - ". Auth::user()->email ."!");
+
         return redirect()->route('users.index')
             ->with('success', 'Data user berhasil diperbarui!');
     }
@@ -100,6 +107,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        LogHelper::record('User dengan ID ' . $user->id . ' dan email ' . $user->email . ' telah dihapus oleh ' . Auth::user()->name . ' (' . Auth::user()->role . ').');
+        
         $user->delete();
 
         return redirect()->route('users.index')

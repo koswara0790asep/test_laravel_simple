@@ -145,29 +145,67 @@
           <div class="menu-inner-shadow"></div>
 
           <ul class="menu-inner py-1">
-            <!-- Dashboard -->
-            <li class="menu-item {{ request()->is('dashboard*') ? 'active' : '' }}">
-              <a href="{{ route('layouts.dashboard') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                <div data-i18n="Analytics">Dashboard</div>
-              </a>
-            </li>
 
-            {{-- Data User --}}
-            <li class="menu-item {{ request()->is('users*') ? 'active' : ''}}">
-              <a href="{{ route('users.index') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-user"></i>
-                <div data-i18n="Users">Data User</div>
-              </a>
-            </li>
+            @if (Auth::user()->role == 'staff')
+              <!-- Dashboard -->
+              <li class="menu-item {{ request()->is('dashboard*') ? 'active' : '' }}">
+                <a href="{{ route('dashboard') }}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                  <div data-i18n="Analytics">Dashboard</div>
+                </a>
+              </li>
 
-            {{-- Data Siswa --}}
-            <li class="menu-item {{ request()->is('siswa*') ? 'active' : ''}}">
-              <a href="{{ route('siswa.index') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-table"></i>
-                <div data-i18n="Tables">Data Siswa</div>
-              </a>
-            </li>
+              {{-- Data User --}}
+              <li class="menu-item {{ request()->is('users*') ? 'active' : ''}}">
+                <a href="{{ route('users.index') }}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-user"></i>
+                  <div data-i18n="Users">Data User</div>
+                </a>
+              </li>
+
+              {{-- Data Siswa --}}
+              <li class="menu-item {{ request()->is('siswa*') ? 'active' : ''}}">
+                <a href="{{ route('siswa.index') }}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-table"></i>
+                  <div data-i18n="Tables">Data Siswa</div>
+                </a>
+              </li>
+              
+              {{-- Produk --}}
+              <li class="menu-item {{ request()->is('products*') ? 'active' : ''}}">
+                <a href="{{ route('products.index') }}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-package"></i>
+                  <div data-i18n="Tables">Produk</div>
+                </a>
+              </li>
+              
+              {{-- Log Activity --}}
+              <li class="menu-item {{ request()->is('log-activities*') ? 'active' : ''}}">
+                <a href="{{ route('log_activities.index') }}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-history"></i>
+                  <div data-i18n="Tables">Log Activity</div>
+                </a>
+              </li>
+           
+            @endif
+
+            @if (Auth::user()->role != 'staff')
+              <!-- Dashboard -->
+              <li class="menu-item {{ request()->is('dashboard*') ? 'active' : '' }}">
+                <a href="{{ route('dashboard') }}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                  <div data-i18n="Analytics">Dashboard</div>
+                </a>
+              </li>
+
+              {{-- Log Activity --}}
+              <li class="menu-item {{ request()->is('log-activities*') ? 'active' : ''}}">
+                <a href="{{ route('log_activities.index') }}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-history"></i>
+                  <div data-i18n="Tables">Log Activity</div>
+                </a>
+              </li>
+            @endif
             
           </ul>
         </aside>
@@ -204,7 +242,7 @@
                     data-size="large"
                     data-show-count="true"
                     aria-label="Star themeselection/sneat-html-admin-template-free on GitHub"
-                    >Star</a
+                    >{{ Auth::user()->name }} ({{ Auth::user()->email }}) - {{ Auth::user()->role }}</a
                   >
                 </li>
 
@@ -225,8 +263,8 @@
                             </div>
                           </div>
                           <div class="flex-grow-1">
-                            <span class="fw-semibold d-block">John Doe</span>
-                            <small class="text-muted">Admin</small>
+                            <span class="fw-semibold d-block">{{ Auth::user()->email }}</span>
+                            <small class="text-muted">{{ Auth::user()->role }}</small>
                           </div>
                         </div>
                       </a>
@@ -259,10 +297,12 @@
                       <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="auth-login-basic.html">
+                      <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#logout">
                         <i class="bx bx-power-off me-2"></i>
                         <span class="align-middle">Log Out</span>
-                      </a>
+                        {{-- <button type="button" class="btn btn-outline-light align-middle text-black" data-bs-toggle="modal" data-bs-target="#logout">Log Out</button> --}}
+                      </button>
+                      
                     </li>
                   </ul>
                 </li>
@@ -316,6 +356,33 @@
             <div class="content-backdrop fade"></div>
           </div>
           <!-- Content wrapper -->
+          <!-- Vertically centered Modal Delete -->
+          <div class="modal fade" id="logout" tabindex="-1">
+              <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                  <div class="modal-header bg-warning">
+                  <h5 class="modal-title mb-3">Logout</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body text-center">
+                  <p>
+                      <i style="color: red" class="icon-base bx bx-alarm-exclamation bx-lg"></i>
+                  </p>
+                  <h5>Apakah Anda Yakin?</h5>
+                  <p>Setelah keluar, anda harus memasukan akun kredibel anda.</p>
+                  </div>
+                  <div class="modal-footer justify-content-center">
+                      <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                          @csrf
+                          <a href="#" class="btn btn-secondary" data-bs-dismiss="modal">❌ Tutup</a>
+                          <button type="submit" class="btn btn-outline-danger">🚪 Logout</button>
+                      </form>
+                  </div>
+              </div>
+              </div>
+          </div><!-- End Vertically centered Modal-->
+          
+          {{-- <span class="align-middle">Log Out</span> --}}
         </div>
         <!-- / Layout page -->
       </div>

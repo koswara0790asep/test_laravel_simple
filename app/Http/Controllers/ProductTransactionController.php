@@ -140,7 +140,25 @@ class ProductTransactionController extends Controller
         return view('products.history', compact('transactions'));
     }
 
-    
+    public function printHistory(Request $request)
+    {
+        // 1. Ambil data transaksi beserta detail produk eksternalnya
+        $query = Transaction::with('details')->latest();
+
+        // Opsional: Filter berdasarkan rentang tanggal jika ada request dari form
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $query->whereBetween('transaction_date', [$request->start_date, $request->end_date]);
+        }
+
+        $transactions = $query->get();
+
+        // 2. Ringkasan Total Akumulasi Laporan
+        $totalGrand = $transactions->sum('total_amount');
+        $totalQty   = $transactions->flatMap->details->sum('quantity');
+
+        // 3. Return ke Blade Khusus Laporan Cetak PDF
+        return view('products.print_history', compact('transactions', 'totalGrand', 'totalQty'));
+    }
 
 }
 

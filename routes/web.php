@@ -47,6 +47,10 @@ Route::middleware(['auth', 'role:staff'])->group(function () {
     Route::get('/products', [ProductTransactionController::class, 'index'])->name('products.index');
     Route::post('/checkout', [ProductTransactionController::class, 'store'])->name('products.checkout');
     Route::get('/history', [ProductTransactionController::class, 'history'])->name('transactions.history');
+    
+    // Route Halaman Cetak Laporan PDF Transaksi
+    Route::get('/transactions/print-history', [ProductTransactionController::class, 'printHistory'])
+        ->name('transactions.print_history');
 
 
 
